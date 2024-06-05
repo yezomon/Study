@@ -1,0 +1,30 @@
+-- 코드를 작성해주세요
+
+
+SELECT B.ID,
+    CASE WHEN (B.SIZE_RANK/B.MAX_SIZE_RANK) <= 0.25 THEN 'CRITICAL'
+         WHEN (B.SIZE_RANK/B.MAX_SIZE_RANK) > 0.25 AND (B.SIZE_RANK/B.MAX_SIZE_RANK) <=0.5 THEN 'HIGH'
+         WHEN (B.SIZE_RANK/B.MAX_SIZE_RANK) > 0.5 AND (B.SIZE_RANK/B.MAX_SIZE_RANK) <=0.75 THEN 'MEDIUM'
+         WHEN (B.SIZE_RANK/B.MAX_SIZE_RANK) > 0.75 THEN 'LOW'
+         ELSE 'NULL'
+    END AS 'COLONY_NAME'
+FROM(
+    SELECT *,
+           LAST_VALUE(A.SIZE_RANK) OVER(ORDER BY A.SIZE_RANK RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS 'MAX_SIZE_RANK'
+    FROM(
+        SELECT *,
+               ROW_NUMBER() OVER(ORDER BY SIZE_OF_COLONY DESC) AS 'SIZE_RANK'
+        FROM ECOLI_DATA
+        ) AS A
+    ) AS B
+ORDER BY B.ID
+;
+select a.id,
+case when a.per <= 0.25 then 'CRITICAL'
+when a.per <= 0.5 then 'HIGH'
+when a.per <= 0.75 then 'MEDIUM'
+else 'LOW' end COLONYNAME
+from
+(select id, PERCENTRANK() over (order by SIZEOFCOLONY desc) per
+from ECOLI_DATA ) a
+order by id;
