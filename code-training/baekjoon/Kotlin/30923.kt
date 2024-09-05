@@ -4,6 +4,17 @@ import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.util.*
 
+/*
+3
+3 1 2
+답 : 3 + 3/ + 3 + 2 + 0 + 0 + 1 + 2 +/ 3 + 1 + 2 + 3 + 1 + 2
+6 8 12 = 26
+3
+1 2 3
+답 : 3 + 3 / 1+0+1+0+1+3/123123
+6 6 12 = 24
+윗면아래면 왼오반복 앞면뒷면
+*/
 // Todo. sortWith, sort, reverse, sortDescending, SortBy
 fun main() {
   val br = BufferedReader(InputStreamReader(System.`in`))
